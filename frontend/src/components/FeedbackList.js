@@ -4,7 +4,7 @@ const FeedbackList = ({ feedbacks, onDelete }) => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this feedback?')) {
       try {
-        const response = await fetch(`https://student-feedback-8oem.onrender.com/${id}`, {
+        const response = await fetch(`https://student-feedback-8oem.onrender.com/api/feedback/${id}`, {
           method: 'DELETE',
         });
 
@@ -32,7 +32,7 @@ const FeedbackList = ({ feedbacks, onDelete }) => {
     return new Date(dateString).toLocaleDateString('en-US', options);
   };
 
-  // Ensure feedbacks is always an array
+  // Ensure feedbacks is always an array to prevent map errors
   const safeFeedbacks = Array.isArray(feedbacks) ? feedbacks : [];
 
   return (
@@ -55,7 +55,7 @@ const FeedbackList = ({ feedbacks, onDelete }) => {
                   className="delete-btn"
                   title="Delete feedback"
                 >
-                   Delete
+                  Delete
                 </button>
               </div>
               <p className="feedback-comments">{feedback.comments || ''}</p>
