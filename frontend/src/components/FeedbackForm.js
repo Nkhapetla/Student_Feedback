@@ -15,7 +15,13 @@ const FeedbackForm = ({ onSubmit }) => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.studentName.trim()) newErrors.studentName = 'Student name is required';
+    // Only letters and spaces allowed for student name
+    if (!formData.studentName.trim()) {
+      newErrors.studentName = 'Student name is required';
+    } else if (!/^[A-Za-z\s]+$/.test(formData.studentName.trim())) {
+      newErrors.studentName = 'Student name can only contain letters and spaces';
+    }
+
     if (!formData.courseCode.trim()) newErrors.courseCode = 'Course code is required';
 
     if (!formData.comments.trim()) {
