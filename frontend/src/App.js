@@ -13,7 +13,7 @@ function App() {
   const fetchFeedbacks = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/feedback');
+      const response = await fetch('https://student-feedback-8oem.onrender.com/');
       
       if (!response.ok) {
         throw new Error('Failed to fetch feedbacks');
