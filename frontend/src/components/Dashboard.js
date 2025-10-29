@@ -7,9 +7,10 @@ const Dashboard = ({ feedbacks }) => {
   });
 
   useEffect(() => {
-    const total = feedbacks.length;
+    const safeFeedbacks = Array.isArray(feedbacks) ? feedbacks : [];
+    const total = safeFeedbacks.length;
     const avgRating = total > 0
-      ? (feedbacks.reduce((sum, f) => sum + f.rating, 0) / total).toFixed(1)
+      ? (safeFeedbacks.reduce((sum, f) => sum + (f.rating || 0), 0) / total).toFixed(1)
       : 0;
 
     setStats({ total, avgRating });
