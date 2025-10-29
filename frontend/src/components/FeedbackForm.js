@@ -39,9 +39,16 @@ const FeedbackForm = ({ onSubmit }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Prevent typing numbers/special characters in Student Name
+    let sanitizedValue = value;
+    if (name === 'studentName') {
+      sanitizedValue = value.replace(/[^A-Za-z\s]/g, '');
+    }
+
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'rating' ? parseInt(value) : value
+      [name]: name === 'rating' ? parseInt(sanitizedValue) : sanitizedValue
     }));
 
     if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
