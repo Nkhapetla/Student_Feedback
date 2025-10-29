@@ -4,7 +4,7 @@ const FeedbackList = ({ feedbacks, onDelete }) => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this feedback?')) {
       try {
-        const response = await fetch(`https://student-feedback-8oem.onrender.com//${id}`, {
+        const response = await fetch(`https://student-feedback-8oem.onrender.com/${id}`, {
           method: 'DELETE',
         });
 
@@ -21,6 +21,7 @@ const FeedbackList = ({ feedbacks, onDelete }) => {
   };
 
   const formatDate = (dateString) => {
+    if (!dateString) return '';
     const options = { 
       year: 'numeric', 
       month: 'short', 
@@ -31,20 +32,23 @@ const FeedbackList = ({ feedbacks, onDelete }) => {
     return new Date(dateString).toLocaleDateString('en-US', options);
   };
 
+  // Ensure feedbacks is always an array
+  const safeFeedbacks = Array.isArray(feedbacks) ? feedbacks : [];
+
   return (
     <div className="feedback-list">
-      <h2>All Feedback ({feedbacks.length})</h2>
+      <h2>All Feedback ({safeFeedbacks.length})</h2>
 
-      {feedbacks.length === 0 ? (
+      {safeFeedbacks.length === 0 ? (
         <p className="no-feedback">No feedback submitted yet. Be the first!</p>
       ) : (
         <div className="feedback-items">
-          {feedbacks.map((feedback) => (
+          {safeFeedbacks.map((feedback) => (
             <div key={feedback.id} className="feedback-item">
               <div className="feedback-header">
                 <div>
-                  <h3>{feedback.studentname}</h3>
-                  <span className="course-code">{feedback.coursecode}</span>
+                  <h3>{feedback.studentname || 'Anonymous'}</h3>
+                  <span className="course-code">{feedback.coursecode || 'N/A'}</span>
                 </div>
                 <button
                   onClick={() => handleDelete(feedback.id)}
@@ -54,10 +58,10 @@ const FeedbackList = ({ feedbacks, onDelete }) => {
                    Delete
                 </button>
               </div>
-              <p className="feedback-comments">{feedback.comments}</p>
+              <p className="feedback-comments">{feedback.comments || ''}</p>
               <div className="feedback-footer">
                 <span className="rating">
-                  Rating: {'⭐'.repeat(feedback.rating)} ({feedback.rating}/5)
+                  Rating: {'⭐'.repeat(feedback.rating || 0)} ({feedback.rating || 0}/5)
                 </span>
                 <span className="date">
                   {formatDate(feedback.createdat)}
