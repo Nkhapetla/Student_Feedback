@@ -4,6 +4,8 @@ import Dashboard from './components/Dashboard';
 import FeedbackForm from './components/FeedbackForm';
 import FeedbackList from './components/FeedbackList';
 
+const API_URL = 'https://student-feedback-8oem.onrender.com/api/feedback'; // Backend endpoint
+
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [feedbacks, setFeedbacks] = useState([]);
@@ -13,18 +15,16 @@ function App() {
   const fetchFeedbacks = async () => {
     try {
       setLoading(true);
-      const response = await fetch('https://student-feedback-8oem.onrender.com/');
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch feedbacks');
-      }
-      
+      const response = await fetch(API_URL);
+      if (!response.ok) throw new Error('Failed to fetch feedbacks');
+
       const data = await response.json();
-      setFeedbacks(data);
+      setFeedbacks(Array.isArray(data) ? data : []); // Ensure it's always an array
       setError(null);
-    } catch (error) {
-      console.error('Error fetching feedbacks:', error);
-      setError('Failed to load feedbacks. Please check if the backend server is running.');
+    } catch (err) {
+      console.error('Error fetching feedbacks:', err);
+      setError('Failed to load feedbacks. Check if the backend server is running.');
+      setFeedbacks([]);
     } finally {
       setLoading(false);
     }
@@ -34,15 +34,12 @@ function App() {
     fetchFeedbacks();
   }, []);
 
-  const handleRefresh = () => {
-    fetchFeedbacks();
-  };
+  const handleRefresh = () => fetchFeedbacks();
 
   return (
     <div className="App">
       <header className="app-header">
-        <h1> Student Feedback System</h1>
-        
+        <h1>Student Feedback System</h1>
       </header>
 
       <nav className="navigation">
@@ -50,30 +47,30 @@ function App() {
           className={activeTab === 'dashboard' ? 'active' : ''}
           onClick={() => setActiveTab('dashboard')}
         >
-           Dashboard
+          Dashboard
         </button>
         <button
           className={activeTab === 'submit' ? 'active' : ''}
           onClick={() => setActiveTab('submit')}
         >
-           Submit Feedback
+          Submit Feedback
         </button>
         <button
           className={activeTab === 'view' ? 'active' : ''}
           onClick={() => setActiveTab('view')}
         >
-           View All Feedbacks
+          View All Feedbacks
         </button>
       </nav>
 
       <main className="main-content">
         {loading ? (
-          <div className="loading"> Loading...</div>
+          <div className="loading">Loading...</div>
         ) : error ? (
           <div className="error-message">
-            <p> {error}</p>
+            <p>{error}</p>
             <button onClick={handleRefresh} className="retry-btn">
-               Retry
+              Retry
             </button>
           </div>
         ) : (
