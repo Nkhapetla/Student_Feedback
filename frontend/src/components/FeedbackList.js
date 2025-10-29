@@ -4,7 +4,7 @@ const FeedbackList = ({ feedbacks, onDelete }) => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this feedback?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/feedback/${id}`, {
+        const response = await fetch(`https://student-feedback-8oem.onrender.com//${id}`, {
           method: 'DELETE',
         });
 
