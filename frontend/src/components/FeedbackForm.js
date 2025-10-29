@@ -50,7 +50,7 @@ const FeedbackForm = ({ onSubmit }) => {
     setSubmitMessage('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/feedback', {
+      const response = await fetch('https://student-feedback-8oem.onrender.com/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
