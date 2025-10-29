@@ -50,7 +50,7 @@ const FeedbackForm = ({ onSubmit }) => {
     setSubmitMessage('');
 
     try {
-      const response = await fetch('https://student-feedback-8oem.onrender.com/', {
+      const response = await fetch('https://student-feedback-8oem.onrender.com/api/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -59,7 +59,7 @@ const FeedbackForm = ({ onSubmit }) => {
       const result = await response.json();
 
       if (response.ok) {
-        setSubmitMessage(' Feedback submitted successfully!');
+        setSubmitMessage('✅ Feedback submitted successfully!');
         setFormData({ studentName: '', courseCode: '', comments: '', rating: 0 });
         setErrors({});
 
@@ -150,7 +150,7 @@ const FeedbackForm = ({ onSubmit }) => {
         </div>
 
         <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? ' Submitting...' : ' Submit Feedback'}
+          {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
         </button>
       </form>
     </div>
